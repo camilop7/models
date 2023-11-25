@@ -4,5 +4,7 @@ FactoryBot.define do
     roasted_for { "MyString" }
     score { 1.5 }
     user_rating { 1.5 }
+    rating { nil }
+    reviews { nil }
   end
 end
