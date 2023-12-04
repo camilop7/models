@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :review do
+    coffee
     user
-    coffee_id { 1 }
-    comments { "MyString" }
-    rating { 1 }
+    comments { 'MyText' }
+    rating { 1.5 }
   end
 end

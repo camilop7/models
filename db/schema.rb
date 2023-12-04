@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_25_192227) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_29_000547) do
   create_table "coffees", force: :cascade do |t|
     t.string "origin"
     t.string "roasted_for"
@@ -18,8 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_192227) do
     t.float "user_rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "rating"
-    t.integer "reviews"
+    t.integer "review_id", null: false
+    t.index ["review_id"], name: "index_coffees_on_review_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -38,4 +38,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_192227) do
     t.datetime "date_of_birth"
   end
 
+  add_foreign_key "coffees", "reviews"
 end

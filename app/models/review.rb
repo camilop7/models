@@ -1,6 +1,8 @@
 class Review < ApplicationRecord
-  belongs_to :user
+  belongs_to :coffee, optional: true
+  belongs_to :user, optional: true
+
   validates :comments, presence: true
   validates :rating, presence: true
-  validates :rating, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
+  validates :rating, presence: true, inclusion: { in: 1..5 }
 end
