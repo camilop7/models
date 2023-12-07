@@ -27,7 +27,8 @@ RSpec.describe "/reviews", type: :request do
 
   let(:valid_attributes) { FactoryBot.attributes_for(:review, coffee_id: valid_coffee.id, user_id: valid_user.id)}
 
-  let(:invalid_attributes) { { comments: nil, rating: 1.5 } }
+  let(:invalid_attributes) { FactoryBot.attributes_for(:review, :invalid_review) }
+
 
 
   describe "GET /index" do
@@ -84,12 +85,14 @@ RSpec.describe "/reviews", type: :request do
     context "with valid parameters" do
       let(:new_attributes) { { comments: "Updated Text", rating: 4 } }
 
-
       it "updates the requested review" do
         review = Review.create! valid_attributes
         patch review_url(review), params: { review: new_attributes }
         review.reload
-        skip("Add assertions for updated state")
+
+        # Add assertions for updated state
+        expect(review.comments).to eq("Updated Text")
+        expect(review.rating).to eq(4)
       end
 
       it "redirects to the review" do
@@ -101,15 +104,14 @@ RSpec.describe "/reviews", type: :request do
     end
 
     context "with invalid parameters" do
-
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         review = Review.create! valid_attributes
         patch review_url(review), params: { review: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
-
     end
   end
+
 
   describe "DELETE /destroy" do
     it "destroys the requested review" do
