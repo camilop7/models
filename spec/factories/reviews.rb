@@ -4,5 +4,9 @@ FactoryBot.define do
     user
     comments { 'MyText' }
     rating { 1.5 }
+
+    trait :invalid_review do
+      comments { nil }
+    end
   end
 end

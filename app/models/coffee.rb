@@ -1,7 +1,8 @@
 class Coffee < ApplicationRecord
-  has_many :reviews
-  has_many :users
+  belongs_to :user, optional: true
+  has_many :reviews, dependent: :destroy
 
   validates :origin, presence: true
   validates :roasted_for, presence: true
+
 end

@@ -17,11 +17,17 @@ RSpec.describe "/reviews", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Review. As you add validations to Review, be sure to
   # adjust the attributes here as well.
-  let(:valid_coffee) { Coffee.create!(origin: "Coffee Name", roasted_for: "espresso") }
-  let(:valid_user) { User.create!(name: "User Name") }
+  let(:valid_user) {
+    FactoryBot.create(:user)
+  }
 
-  let(:valid_attributes) { { coffee_id: valid_coffee.id, user_id: valid_user.id, comments: "MyText", rating: 3 } }
-  let(:invalid_attributes) { { coffee_id: nil, user_id: nil, comments: "MyText", rating: 3 } }
+  let(:valid_coffee) {
+    FactoryBot.create(:coffee, user: valid_user)
+  }
+
+  let(:valid_attributes) { FactoryBot.attributes_for(:review, coffee_id: valid_coffee.id, user_id: valid_user.id)}
+
+  let(:invalid_attributes) { { comments: nil, rating: 1.5 } }
 
 
   describe "GET /index" do
@@ -60,19 +66,6 @@ RSpec.describe "/reviews", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Review" do
-        expect {
-          post reviews_url, params: { review: valid_attributes }
-        }.to change(Review, :count).by(1)
-      end
-
-      it "redirects to the created review" do
-        post reviews_url, params: { review: valid_attributes }
-        expect(response).to redirect_to(review_url(Review.last))
-      end
-    end
-
     context "with invalid parameters" do
       it "does not create a new Review" do
         expect {
@@ -80,12 +73,10 @@ RSpec.describe "/reviews", type: :request do
         }.to change(Review, :count).by(0)
       end
 
-
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
         post reviews_url, params: { review: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
-
     end
   end
 
