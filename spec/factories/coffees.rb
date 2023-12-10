@@ -4,5 +4,9 @@ FactoryBot.define do
     roasted_for { 'MyString' }
     score { 1.5 }
     user_rating { 1.5 }
+
+    trait :invalid_coffee do
+      origin { nil }
+    end
   end
 end
